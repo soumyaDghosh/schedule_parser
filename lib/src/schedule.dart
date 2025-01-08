@@ -3,16 +3,16 @@ import 'package:xml/xml.dart';
 class Schedule {
   final String acronym;
   final String title;
-  final String? subtitle;
+  final String subtitle;
   final String venue;
   final String city;
   final String startDate;
   final String endDate;
-  final int? days;
-  final String? dayChange;
-  final String? timeSlotDuration;
+  final int days;
+  final String dayChange;
+  final String timeSlotDuration;
   final Uri baseUrl;
-  final String? timeZone;
+  final String timeZone;
 
   // Map to store lists of raw XmlNodes for each property
   final Map<String, List<XmlNode>?> rawNodes;
@@ -20,30 +20,30 @@ class Schedule {
   const Schedule({
     required this.acronym,
     required this.title,
-    this.subtitle,
+    this.subtitle = '',
     required this.venue,
     required this.city,
     required this.startDate,
     required this.endDate,
-    this.days,
-    this.dayChange,
-    this.timeSlotDuration,
+    this.days = 1,
+    this.dayChange = '',
+    this.timeSlotDuration = '',
     required this.baseUrl,
-    this.timeZone,
+    this.timeZone = '',
     required this.rawNodes,
   });
 
   factory Schedule.fromXml(XmlElement element) {
     // Helper function to get required attribute as string
-    String? getValue(String attributeName, {bool isRequired = true}) {
+    String getValue(String attributeName, {bool isRequired = true}) {
       final elements = element.getElement(attributeName);
-      if (elements == null || elements.descendants.isEmpty) {
-        if (isRequired) {
-          throw ArgumentError('Missing required attribute: $attributeName');
-        }
-        return null;
+      if (elements != null && elements.descendants.isNotEmpty) {
+        return elements.innerText.trim();
       }
-      return elements.innerText.trim();
+      if (isRequired) {
+        throw ArgumentError('Missing required attribute: $attributeName');
+      }
+      return '';
     }
 
     // Helper function to get all XmlNodes for a given property name
@@ -59,8 +59,7 @@ class Schedule {
     final city = getValue('city');
     final startDate = getValue('start');
     final endDate = getValue('end');
-    final baseUrlString = getValue('base_url');
-    final baseUrl = Uri.parse(baseUrlString!);
+    final baseUrl = Uri.parse(getValue('base_url'));
 
     // Optional attributes
     final subtitle = getValue('subtitle', isRequired: false);
@@ -86,14 +85,14 @@ class Schedule {
     };
 
     return Schedule(
-      acronym: acronym!,
-      title: title!,
+      acronym: acronym,
+      title: title,
       subtitle: subtitle,
-      venue: venue!,
-      city: city!,
-      startDate: startDate!,
-      endDate: endDate!,
-      days: days != null ? int.parse(days) : null,
+      venue: venue,
+      city: city,
+      startDate: startDate,
+      endDate: endDate,
+      days: int.tryParse(days) ?? 1,
       dayChange: dayChange,
       timeSlotDuration: timeSlotDuration,
       baseUrl: baseUrl,
@@ -103,7 +102,7 @@ class Schedule {
   }
 
   // Method to get a property as a list of XmlNodes
-  List<XmlNode>? getRawXmlNodes(String property) {
-    return rawNodes[property];
+  List<XmlNode> getRawXmlNodes(String property) {
+    return rawNodes[property] ?? [];
   }
 }
