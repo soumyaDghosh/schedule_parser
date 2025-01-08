@@ -9,13 +9,11 @@ class Schedule {
   final String startDate;
   final String endDate;
   final int days;
-  final DateTime? dayChange;
-  final DateTime? timeSlotDuration;
+  final String? dayChange;
+  final String? timeSlotDuration;
   final Uri baseUrl;
   final String timeZone;
-
-  // Map to store lists of raw XmlNodes for each property
-  final Map<String, List<XmlNode>?> rawNodes;
+  static late Map<String, List<XmlNode>?> _rawNodes;
 
   const Schedule({
     required this.acronym,
@@ -30,7 +28,6 @@ class Schedule {
     this.timeSlotDuration,
     required this.baseUrl,
     this.timeZone = '',
-    required this.rawNodes,
   });
 
   factory Schedule.fromXml(XmlElement element) {
@@ -69,7 +66,7 @@ class Schedule {
     final timeZone = getValue('time_zone_name', isRequired: false);
 
     // Store lists of XmlNodes for all attributes
-    final rawNodes = <String, List<XmlNode>?>{
+    _rawNodes = <String, List<XmlNode>?>{
       'acronym': getAllNodes('acronym'),
       'title': getAllNodes('title'),
       'subtitle': getAllNodes('subtitle'),
@@ -93,16 +90,14 @@ class Schedule {
       startDate: startDate,
       endDate: endDate,
       days: int.tryParse(days) ?? 1,
-      dayChange: DateTime.tryParse(dayChange),
-      timeSlotDuration: DateTime.tryParse(timeSlotDuration),
+      dayChange: dayChange,
+      timeSlotDuration: timeSlotDuration,
       baseUrl: baseUrl,
       timeZone: timeZone,
-      rawNodes: rawNodes,
     );
   }
 
-  // Method to get a property as a list of XmlNodes
   List<XmlNode> getRawXmlNodes(String property) {
-    return rawNodes[property] ?? [];
+    return _rawNodes[property] ?? [];
   }
 }

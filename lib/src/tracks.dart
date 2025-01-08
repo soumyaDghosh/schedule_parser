@@ -12,7 +12,8 @@ class Track {
   // Factory constructor to parse XML element and create a Track instance
   factory Track.fromXml(XmlElement node) {
     final name = node.innerText.trim();
-    final onlineQa = bool.parse(node.getAttribute('online_qa') ?? 'false');
+    final onlineQa =
+        bool.tryParse(node.getAttribute('online_qa') ?? '') ?? false;
 
     return Track(
       name: name,
