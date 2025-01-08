@@ -9,8 +9,8 @@ class Schedule {
   final String startDate;
   final String endDate;
   final int days;
-  final String dayChange;
-  final String timeSlotDuration;
+  final DateTime? dayChange;
+  final DateTime? timeSlotDuration;
   final Uri baseUrl;
   final String timeZone;
 
@@ -26,8 +26,8 @@ class Schedule {
     required this.startDate,
     required this.endDate,
     this.days = 1,
-    this.dayChange = '',
-    this.timeSlotDuration = '',
+    this.dayChange,
+    this.timeSlotDuration,
     required this.baseUrl,
     this.timeZone = '',
     required this.rawNodes,
@@ -93,8 +93,8 @@ class Schedule {
       startDate: startDate,
       endDate: endDate,
       days: int.tryParse(days) ?? 1,
-      dayChange: dayChange,
-      timeSlotDuration: timeSlotDuration,
+      dayChange: DateTime.tryParse(dayChange),
+      timeSlotDuration: DateTime.tryParse(timeSlotDuration),
       baseUrl: baseUrl,
       timeZone: timeZone,
       rawNodes: rawNodes,
