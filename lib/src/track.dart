@@ -1,8 +1,9 @@
+import 'package:schedule_parser/src/utils.dart';
 import 'package:xml/xml.dart';
 
 class Track {
   final String name;
-  final bool onlineQa;
+  final bool? onlineQa;
 
   const Track({
     required this.name,
@@ -10,10 +11,11 @@ class Track {
   });
 
   // Factory constructor to parse XML element and create a Track instance
-  factory Track.fromXml(XmlElement node) {
-    final name = node.innerText.trim();
-    final onlineQa =
-        bool.tryParse(node.getAttribute('online_qa') ?? '') ?? false;
+  factory Track.fromXml(XmlElement element) {
+    final name = element.innerText.trim();
+    final onlineQa = bool.tryParse(
+      getValue(element, 'online_qa', valueType: ValueType.attribute),
+    );
 
     return Track(
       name: name,

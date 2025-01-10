@@ -1,30 +1,51 @@
 import 'package:xml/xml.dart';
 
 import 'room.dart';
+import 'utils.dart';
 
 class Day {
-  final int index;
+  final int? index;
   final DateTime date;
-  final DateTime start;
-  final DateTime end;
-  final List<Room> rooms;
+  final DateTime? start;
+  final DateTime? end;
+  final List<Room?> rooms;
 
   const Day({
-    required this.index,
+    this.index,
     required this.date,
-    required this.start,
-    required this.end,
+    this.start,
+    this.end,
     required this.rooms,
   });
-
   // Factory constructor to create a Day instance from an XML element
   factory Day.fromXml(XmlElement element) {
-    final index = int.parse(element.getAttribute('index') ?? '');
-    final date = DateTime.parse(element.getAttribute('date') ?? '');
-    final start = DateTime.parse(element.getAttribute('start') ?? '');
-    final end = DateTime.parse(element.getAttribute('end') ?? '');
+    final index = int.tryParse(getValue(
+      element,
+      'index',
+      valueType: ValueType.attribute,
+    ));
+    final date = DateTime.parse(getValue(
+      element,
+      'date',
+      isRequired: true,
+      valueType: ValueType.attribute,
+    ));
+
+    final start = DateTime.tryParse(getValue(
+      element,
+      'start',
+      valueType: ValueType.attribute,
+    ));
+
+    final end = DateTime.tryParse(getValue(
+      element,
+      'end',
+      valueType: ValueType.attribute,
+    ));
+
     final rooms =
         element.findElements('room').map((e) => Room.fromXml(e)).toList();
+
     return Day(
       index: index,
       date: date,
