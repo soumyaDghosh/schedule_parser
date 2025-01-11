@@ -16,7 +16,7 @@ class Track {
 
   const Track({
     required this.name,
-    required this.onlineQa,
+    this.onlineQa,
   });
 
   // Factory constructor to parse XML element and create a Track instance

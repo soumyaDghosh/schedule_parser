@@ -10,6 +10,7 @@
 import 'package:xml/xml.dart';
 
 import 'person.dart';
+import 'track.dart';
 import 'utils.dart';
 
 class Event {
@@ -22,7 +23,7 @@ class Event {
   final Uri? url;
   final String title;
   final String? subtitle;
-  final String? track;
+  final Track? track;
   final String type;
   final String language;
   final String? abstractinnerText;
@@ -50,7 +51,7 @@ class Event {
   });
 
   // Factory constructor to create an Event instance from an XML element
-  factory Event.fromXml(XmlElement element) {
+  factory Event.fromXml(XmlElement element, List<Track>? tracks) {
     final guid = getValue(element, 'guid', valueType: ValueType.attribute);
     final id =
         int.tryParse(getValue(element, 'id', valueType: ValueType.attribute));
@@ -61,7 +62,16 @@ class Event {
     final url = Uri.parse(getValue(element, 'url'));
     final title = getValue(element, 'title');
     final subtitle = getValue(element, 'subtitle');
-    final track = getValue(element, 'track');
+    Track eventTrack = Track(name: '');
+    if (tracks != null) {
+      for (var tr in tracks) {
+        if (tr.name == getValue(element, 'track')) {
+          eventTrack = tr;
+        }
+      }
+    } else {
+      eventTrack = Track(name: getValue(element, 'track'));
+    }
     final type = getValue(element, 'type');
     final language = getValue(element, 'language');
     final abstractinnerText = getValue(element, 'abstract');
@@ -86,7 +96,7 @@ class Event {
       url: url,
       title: title,
       subtitle: subtitle,
-      track: track,
+      track: eventTrack,
       type: type,
       language: language,
       abstractinnerText: abstractinnerText,

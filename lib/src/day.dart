@@ -10,6 +10,7 @@
 import 'package:xml/xml.dart';
 
 import 'room.dart';
+import 'track.dart';
 import 'utils.dart';
 
 class Day {
@@ -27,7 +28,7 @@ class Day {
     required this.rooms,
   });
   // Factory constructor to create a Day instance from an XML element
-  factory Day.fromXml(XmlElement element) {
+  factory Day.fromXml(XmlElement element, List<Track>? tracks) {
     final index = int.tryParse(getValue(
       element,
       'index',
@@ -52,8 +53,10 @@ class Day {
       valueType: ValueType.attribute,
     ));
 
-    final rooms =
-        element.findElements('room').map((e) => Room.fromXml(e)).toList();
+    final rooms = element
+        .findElements('room')
+        .map((e) => Room.fromXml(e, tracks))
+        .toList();
 
     return Day(
       index: index,

@@ -10,6 +10,7 @@
 import 'package:xml/xml.dart';
 
 import 'event.dart';
+import 'track.dart';
 import 'utils.dart';
 
 class Room {
@@ -24,7 +25,7 @@ class Room {
   });
 
   // Factory constructor to parse XML element and create a Room instance
-  factory Room.fromXml(XmlElement element) {
+  factory Room.fromXml(XmlElement element, List<Track>? tracks) {
     final name = getValue(
       element,
       'name',
@@ -38,8 +39,11 @@ class Room {
       valueType: ValueType.attribute,
     );
 
-    final events =
-        element.findElements('event').map((e) => Event.fromXml(e)).toList();
+    final events = element
+        .findElements('event')
+        .map((e) => Event.fromXml(e, tracks))
+        .toList();
+
     return Room(
       name: name,
       slug: slug,

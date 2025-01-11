@@ -57,7 +57,7 @@ class ScheduleParser {
 
     // Parse days
     final dayElements = xmlDocument.rootElement.findElements('day');
-    final days = dayElements.map((day) => Day.fromXml(day)).toList();
+    final days = dayElements.map((day) => Day.fromXml(day, tracks)).toList();
 
     final format = ScheduleFormat.xml;
 
