@@ -59,6 +59,22 @@ class ScheduleParser {
     final dayElements = xmlDocument.rootElement.findElements('day');
     final days = dayElements.map((day) => Day.fromXml(day, tracks)).toList();
 
+    for (final day in days) {
+      for (final room in day.rooms) {
+        if (room == null) {
+          continue;
+        }
+        for (final event in room.events) {
+          if (event == null) {
+            continue;
+          }
+          if (!tracks.contains(event.track) && event.track != null) {
+            tracks.add(event.track!);
+          }
+        }
+      }
+    }
+
     final format = ScheduleFormat.xml;
 
     return ScheduleParser(

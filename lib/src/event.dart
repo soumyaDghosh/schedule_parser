@@ -62,15 +62,17 @@ class Event {
     final url = Uri.parse(getValue(element, 'url'));
     final title = getValue(element, 'title');
     final subtitle = getValue(element, 'subtitle');
-    Track eventTrack = Track(name: '');
+    Track? eventTrack;
     if (tracks != null) {
       for (var tr in tracks) {
-        if (tr.name == getValue(element, 'track')) {
+        if (tr.name.isNotEmpty && tr.name == getValue(element, 'track')) {
           eventTrack = tr;
         }
       }
-    } else {
-      eventTrack = Track(name: getValue(element, 'track'));
+    }
+    XmlElement? trackElement = element.getElement('track');
+    if (trackElement != null) {
+      eventTrack = Track.fromXml(trackElement);
     }
     final type = getValue(element, 'type');
     final language = getValue(element, 'language');

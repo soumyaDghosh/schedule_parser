@@ -7,9 +7,6 @@
 //
 // You should have received a copy of the GNU General Public License along with schedule_parser. If not, see <https://www.gnu.org/licenses/>.
 
-import 'dart:io';
-import 'dart:math';
-
 import 'package:schedule_parser/schedule_parser.dart';
 import 'package:test/test.dart';
 
@@ -37,6 +34,7 @@ void main() {
       final schedule =
           await ScheduleParser.fromUrl("https://fosdem.org/2025/schedule/xml");
       expect(schedule.tracks[0].name, "Lightning Talks");
+      expect(schedule.tracks[0].onlineQa, false);
     });
 
     test('parses events correctly', () async {
@@ -83,7 +81,9 @@ void main() {
 
     test('parses schedule tracks correctly', () async {
       final schedule = await ScheduleParser.fromUrl(url);
-      expect(schedule.tracks, isEmpty);
+      expect(schedule.tracks, isNotEmpty);
+      expect(schedule.tracks[1].name, "Culture");
+      expect(schedule.tracks[1].onlineQa, false);
     });
     test('parses events correctly', () async {
       final schedule = await ScheduleParser.fromUrl(url);

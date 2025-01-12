@@ -16,19 +16,20 @@ class Track {
 
   const Track({
     required this.name,
-    this.onlineQa,
+    this.onlineQa = false,
   });
 
   // Factory constructor to parse XML element and create a Track instance
   factory Track.fromXml(XmlElement element) {
     final name = element.innerText.trim();
     final onlineQa = bool.tryParse(
-      getValue(element, 'online_qa', valueType: ValueType.attribute),
-    );
+        getValue(element, 'online_qa', valueType: ValueType.attribute).isEmpty
+            ? 'false'
+            : getValue(element, 'online_qa', valueType: ValueType.attribute));
 
     return Track(
       name: name,
-      onlineQa: onlineQa,
+      onlineQa: onlineQa ?? false,
     );
   }
 }
