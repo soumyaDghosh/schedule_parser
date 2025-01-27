@@ -14,43 +14,43 @@ void main() {
   group('ScheduleParser.fromUrl for Pentabarf', () {
     test('returns non-null schedule', () async {
       final schedule =
-          await ScheduleParser.fromUrl("https://fosdem.org/2025/schedule/xml");
+          await ScheduleParser.fromUrl("https://fosdem.org/2024/schedule/xml");
       expect(schedule, isNotNull);
     });
 
     test('parses schedule title correctly', () async {
       final schedule =
-          await ScheduleParser.fromUrl("https://fosdem.org/2025/schedule/xml");
-      expect(schedule.schedule.title, "FOSDEM 2025");
+          await ScheduleParser.fromUrl("https://fosdem.org/2024/schedule/xml");
+      expect(schedule.schedule.title, "FOSDEM 2024");
     });
 
     test('parses schedule tracks correctly', () async {
       final schedule =
-          await ScheduleParser.fromUrl("https://fosdem.org/2025/schedule/xml");
+          await ScheduleParser.fromUrl("https://fosdem.org/2024/schedule/xml");
       expect(schedule.tracks, isNotEmpty);
     });
 
     test('parses first track name correctly', () async {
       final schedule =
-          await ScheduleParser.fromUrl("https://fosdem.org/2025/schedule/xml");
-      expect(schedule.tracks[0].name, "Lightning Talks");
-      expect(schedule.tracks[0].onlineQa, false);
+          await ScheduleParser.fromUrl("https://fosdem.org/2024/schedule/xml");
+      expect(schedule.tracks[0].name, "Keynotes");
+      expect(schedule.tracks[0].onlineQa, true);
     });
 
     test('parses events correctly', () async {
       final schedule =
-          await ScheduleParser.fromUrl("https://fosdem.org/2025/schedule/xml");
+          await ScheduleParser.fromUrl("https://fosdem.org/2024/schedule/xml");
       expect(
         schedule.days.first.rooms.first?.events.isEmpty,
-        true,
+        false,
       );
       expect(
-        schedule.days.first.rooms[2]?.events.first?.title,
-        "A New Approach to Callee-Saved Registers in LLVM",
+        schedule.days.first.rooms.first?.events.first?.title,
+        "Welcome to FOSDEM 2024",
       );
       expect(
-        schedule.days.first.rooms[2]?.events.first?.track?.name,
-        "LLVM",
+        schedule.days.first.rooms.first?.events.first?.track?.name,
+        "Keynotes",
       );
     });
 
@@ -62,7 +62,7 @@ void main() {
     test('fails with non-XML content', () async {
       expect(
           () async => await ScheduleParser.fromUrl(
-              "https://fosdem.org/2025/schedule/non-xml"),
+              "https://fosdem.org/2024/schedule/non-xml"),
           throwsA(isA<Exception>()));
     });
   });
@@ -109,7 +109,7 @@ void main() {
     test('fails with non-XML content', () async {
       expect(
           () async => await ScheduleParser.fromUrl(
-              "https://fosdem.org/2025/schedule/non-xml"),
+              "https://fosdem.org/2024/schedule/non-xml"),
           throwsA(isA<Exception>()));
     });
   });
