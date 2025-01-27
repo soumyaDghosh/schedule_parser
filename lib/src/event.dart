@@ -18,7 +18,7 @@ class Event {
   final int? id;
   final DateTime date;
   final String? start;
-  final String duration;
+  final Duration duration;
   final String? slug;
   final Uri? url;
   final String title;
@@ -29,6 +29,7 @@ class Event {
   final String? abstractinnerText;
   final String? description;
   final Uri? feedbackUrl;
+  final String? room;
   final List<Person> persons;
 
   const Event({
@@ -47,6 +48,7 @@ class Event {
     this.abstractinnerText,
     this.description,
     this.feedbackUrl,
+    this.room,
     required this.persons,
   });
 
@@ -57,7 +59,11 @@ class Event {
         int.tryParse(getValue(element, 'id', valueType: ValueType.attribute));
     final date = DateTime.parse(getValue(element, 'date'));
     final start = getValue(element, 'start');
-    final duration = getValue(element, 'duration');
+    final durationString = getValue(element, 'duration');
+    final parts = durationString.split(':');
+    final hours = int.parse(parts[0]);
+    final minutes = int.parse(parts[1]);
+    final duration = Duration(hours: hours, minutes: minutes);
     final slug = getValue(element, 'slug');
     final url = Uri.parse(getValue(element, 'url'));
     final title = getValue(element, 'title');
@@ -79,6 +85,7 @@ class Event {
     final abstractinnerText = getValue(element, 'abstract');
     final description = getValue(element, 'description');
     final feedbackUrl = Uri.parse(getValue(element, 'feedback_url'));
+    final room = getValue(element, 'room');
 
     // Parse persons
     final personsElement = element.getElement('persons');
@@ -104,6 +111,7 @@ class Event {
       abstractinnerText: abstractinnerText,
       description: description,
       feedbackUrl: feedbackUrl,
+      room: room,
       persons: persons,
     );
   }
