@@ -72,4 +72,21 @@ class Schedule {
       timeZone: timeZone,
     );
   }
+
+  Map<String, String> toMap() {
+    return {
+      'Acronym': acronym,
+      'Title': title,
+      'Sub-Title': subtitle ?? '',
+      'Venue': venue ?? '',
+      'City': city ?? '',
+      'Start Date': startDate ?? '',
+      'End Date': endDate ?? '',
+      'Days': days.toString(),
+      'Day Change': dayChange ?? '',
+      'Time Slot Duration': timeSlotDuration ?? '',
+      'Base Url': baseUrl.toString(),
+      'Time Zone': timeZone ?? '',
+    };
+  }
 }

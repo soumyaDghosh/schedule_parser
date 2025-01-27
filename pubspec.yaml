@@ -10,6 +10,7 @@ environment:
 dependencies:
   xml: ^6.5.0
   http: ^1.2.2
+  path_provider: ^2.1.5
   # path: ^1.8.0
 
 dev_dependencies:
